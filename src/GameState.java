@@ -33,7 +33,11 @@ public class GameState {
 			}
 		}
 
+		//iterates through currentBoard
 		for(int[] a: currentBoard) {
+			for(int element: a) {
+				
+			}
 			// search up how to do for each loop for double array
 		}
 
