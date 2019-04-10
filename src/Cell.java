@@ -6,6 +6,8 @@ public class Cell {
 		  1 is  white
 		  2 is  black*/
 	private boolean placeable;
+	private int row;
+	private int col;
 	Cell(){
 		cellState = 0;
 		placeable = false;
@@ -24,6 +26,23 @@ public class Cell {
 		cellState = 0;
 	}
 	
+	//the following is for methods is for the row and col integer variables
+	public void setRow(int desiredRow) {
+		row = desiredRow;
+	}
+	
+	public void setCol(int desiredCol) {
+		col = desiredCol;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getCol() {
+		return col;
+	}
+	
 	//the following methods is for the placeable
 	public void setPlaceable(boolean isplaceable) {
 		placeable = isplaceable;
@@ -32,10 +51,5 @@ public class Cell {
 	public boolean getPlaceable() {
 		return placeable;
 	}
-	
-	
-	
-
+  
 }
-
-
