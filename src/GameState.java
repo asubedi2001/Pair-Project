@@ -1,7 +1,7 @@
 
 public class GameState {
 	private Cell[][] cellArray; // current state of cells on board
-
+	private boolean turn; //true -> player1Turn false->player2Turn
 	GameState() {
 		cellArray = new Cell[8][8];
 		for(int a = 0;a < 8; a++) {
@@ -13,6 +13,14 @@ public class GameState {
 
 	}
 
+	public void setTurn(boolean turnSet) {
+		turn = turnSet;
+	}
+	
+	public boolean getTurn() {
+		return turn;
+	}
+	
 	public Cell[][] getCellArray() {
 		return cellArray;
 		// return the reference for the array of cells
