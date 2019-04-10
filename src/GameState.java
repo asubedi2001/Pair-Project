@@ -4,6 +4,12 @@ public class GameState {
 
 	GameState() {
 		cellArray = new Cell[8][8];
+		for(int a = 0;a < 8; a++) {
+			for(int b = 0; b < 8; b++) {
+				cellArray[a][b].setRow(a);
+				cellArray[a][b].setRow(b);
+			}
+		}
 
 	}
 
@@ -19,12 +25,14 @@ public class GameState {
 		}else if(state == 2) {
 			cellArray[row][col].setBlack();
 		}
+		
 
 	}
 
 	public boolean isPlaceable(Cell potentialCell) {
 		//potentialCell is the cell that the user is trying to use
-
+		int row = potentialCell.getRow();
+		int col = potentialCell.getCol();
 		//creates a new array and sets contents in that array equal to cellArray's states
 		int [][] currentBoard = new int[8][8];
 		for(int rw = 0; rw < 8; rw ++) {
@@ -36,7 +44,7 @@ public class GameState {
 		//iterates through currentBoard
 		for(int[] a: currentBoard) {
 			for(int element: a) {
-				
+
 			}
 			// search up how to do for each loop for double array
 		}
