@@ -42,12 +42,6 @@ public class GameState {
 		//potentialCell is the cell that the user is trying to use
 		int row = potentialCell.getRow();
 		int col = potentialCell.getCol();
-		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
-		 if(potentialCell.getState() != 0 ) {
-			 return false;
-		 }else {
-			 
-		 }
 		
 		//creates a new array and sets contents in that array equal to cellArray's states
 		int [][] currentBoard = new int[8][8];
@@ -57,12 +51,28 @@ public class GameState {
 			}
 		}
 		
+		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
+		if(potentialCell.getState() != 0 ) {
+			 return false;
+		 }else {
+			 
+			 //if player 2
+			 if(turn) {
+				 for(int rowCounter = 0; rowCounter < 8; rowCounter++) {
+						if(currentBoard[rowCounter][col]) {
+							
+						}
+					}
+			 }else {
+				 
+			 }
+		 }
+		
+		
+	
+		
 		//checks vertically first
-		for(int rowCounter = 0; rowCounter < 8; rowCounter++) {
-			if(currentBoard[rowCounter][col]) {
-				
-			}
-		}
+		
 
 		//iterates through currentBoard
 		for(int[] a: currentBoard) {
