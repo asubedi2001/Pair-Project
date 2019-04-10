@@ -28,7 +28,10 @@ public class Cell {
 	public void setPlaceable(boolean isplaceable) {
 		placeable = isplaceable;
 	}
-
+	
+	public boolean getPlaceable() {
+		return placeable;
+	}
 	
 	
 	
