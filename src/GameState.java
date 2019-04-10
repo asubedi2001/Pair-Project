@@ -29,15 +29,30 @@ public class GameState {
 
 	}
 
+	// Should create an array for this that has a true and false for each player. This should be only a couple lines long
 	public boolean isPlaceable(Cell potentialCell) {
 		//potentialCell is the cell that the user is trying to use
 		int row = potentialCell.getRow();
 		int col = potentialCell.getCol();
+		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
+		 if(potentialCell.getState() != 0 ) {
+			 return false;
+		 }else {
+			 
+		 }
+		
 		//creates a new array and sets contents in that array equal to cellArray's states
 		int [][] currentBoard = new int[8][8];
 		for(int rw = 0; rw < 8; rw ++) {
 			for(int cl = 0; cl< 8; cl++) {
 				currentBoard[rw][cl] = cellArray[rw][cl].getState(); 
+			}
+		}
+		
+		//checks vertically first
+		for(int rowCounter = 0; rowCounter < 8; rowCounter++) {
+			if(currentBoard[rowCounter][col]) {
+				
 			}
 		}
 
