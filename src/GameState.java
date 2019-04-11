@@ -2,6 +2,7 @@
 public class GameState {
 	private Cell[][] cellArray; // current state of cells on board
 	private boolean turn; //true -> player1Turn false->player2Turn
+	int [][] currentBoard = new int[8][8];	
 	GameState() {
 		cellArray = new Cell[8][8];
 		for(int a = 0;a < 8; a++) {
@@ -16,11 +17,11 @@ public class GameState {
 	public void setTurn(boolean turnSet) {
 		turn = turnSet;
 	}
-	
+
 	public boolean getTurn() {
 		return turn;
 	}
-	
+
 	public Cell[][] getCellArray() {
 		return cellArray;
 		// return the reference for the array of cells
@@ -33,7 +34,7 @@ public class GameState {
 		}else if(state == 2) {
 			cellArray[row][col].setBlack();
 		}
-		
+
 
 	}
 
@@ -42,27 +43,53 @@ public class GameState {
 		//potentialCell is the cell that the user is trying to use
 		int row = potentialCell.getRow();
 		int col = potentialCell.getCol();
-		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
-		 if(potentialCell.getState() != 0 ) {
-			 return false;
-		 }else {
-			 
-		 }
-		
+
 		//creates a new array and sets contents in that array equal to cellArray's states
-		int [][] currentBoard = new int[8][8];
+
 		for(int rw = 0; rw < 8; rw ++) {
 			for(int cl = 0; cl< 8; cl++) {
 				currentBoard[rw][cl] = cellArray[rw][cl].getState(); 
 			}
 		}
-		
-		//checks vertically first
-		for(int rowCounter = 0; rowCounter < 8; rowCounter++) {
-			if(currentBoard[rowCounter][col]) {
-				
+
+		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
+		if(potentialCell.getState() != 0 ) {
+			return false;
+		}else {
+
+			//if player 2
+			if(turn) {
+				boolean colHasBlack;
+
+				int colHasWhiteAfterBlack = 0;
+
+
+
+				for(int rowCounter = 0; rowCounter < 7; rowCounter++) {
+					if(rowCounter == 0) {
+						if(isBlack(rowCounter, col)) {
+							colHasBlack = true;
+							if(isEmpty(rowCounter+1, col)) {
+								colHasBlack = false;
+							}
+						}
+					}
+
+					if(currentBoard[rowCounter][col] == 2) {
+
+					}
+				}
+
+			}else {
+
 			}
 		}
+
+
+
+
+		//checks vertically first
+
 
 		//iterates through currentBoard
 		for(int[] a: currentBoard) {
@@ -78,7 +105,15 @@ public class GameState {
 
 	// need a way to access and modify the cell array though i guess that can be done through getCellArray()
 
-
+	private boolean isBlack(int rowCounter, int col) {
+		return (currentBoard[rowCounter][col]) == 2;
+	}
+	private boolean isWhite(int rowCounter, int col) {
+		return (currentBoard[rowCounter][col]) == 1;
+	}
+	private boolean isEmpty(int rowCounter, int col) {
+		return (currentBoard[rowCounter][col]) == 0;
+	}
 
 }
 
