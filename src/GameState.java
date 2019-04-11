@@ -43,7 +43,10 @@ public class GameState {
 		//potentialCell is the cell that the user is trying to use
 		int row = potentialCell.getRow();
 		int col = potentialCell.getCol();
-
+		boolean isPlaceableHorizontal;
+		boolean isPlaceableVertical;
+		boolean isPlaceableIncline;
+		boolean isPlaceableDecline;
 		//creates a new array and sets contents in that array equal to cellArray's states
 
 		for(int rw = 0; rw < 8; rw ++) {
@@ -53,52 +56,84 @@ public class GameState {
 		}
 
 		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
-		if(potentialCell.getState() != 0 ) {
-			return false;
-		}else {
+		if(potentialCell.getState() == 0 ) {
+			if(!turn) {
+				//player 2 (Black)
 
-			//if player 2
-			if(turn) {
-				boolean colHasBlack;
-
-				int colHasWhiteAfterBlack = 0;
-
-
-
-				for(int rowCounter = 0; rowCounter < 7; rowCounter++) {
-					if(rowCounter == 0) {
-						if(isBlack(rowCounter, col)) {
-							colHasBlack = true;
-							if(isEmpty(rowCounter+1, col)) {
-								colHasBlack = false;
-							}
-						}
+				//checks vertically
+				if(row == 0) {
+					if(currentBoard[row+1][col] == 1) {
+						isPlaceableVertical = true;
+					}else {
+						isPlaceableVertical = false;
 					}
+				}else if (row == 7) {
+					if(currentBoard[row-1][col] == 1) {
+						isPlaceableVertical = true;
+					}else {
+						isPlaceableVertical = false;
+					}
+				}else {
+					//if in between, check both sides
+					if(currentBoard[row+1][col] == 1 || currentBoard[row-1][col] == 1) {
+						isPlaceableVertical = true;						
+					}else{
+						isPlaceableVertical = false;
+					}
+				}
 
-					if(currentBoard[rowCounter][col] == 2) {
+				//check horizontally
+				if(col == 0) {
+					if(currentBoard[row][col+1] == 1) {
+						isPlaceableHorizontal = true;
+					}else {
+						isPlaceableHorizontal = false;
+					}
+				}else if (row == 7) {
+					if(currentBoard[row][col-1] == 1) {
+						isPlaceableHorizontal = true;
+					}else {
+						isPlaceableHorizontal = false;
+					}
+				}else {
+					//if in between, check both sides
+					if(currentBoard[row][col+1] == 1 || currentBoard[row][col-1] == 1) {
+						isPlaceableHorizontal = true;						
+					}else{
+						isPlaceableHorizontal = false;
+					}
+				}
 
+
+				//check Incline TODO make sure that the edge cases are taken care of inside of the if statements. 
+				// Row 0, Row 7, Col 0, Col 7, and the rest can be placed in an else statement 
+				if(col == 0) {
+					if(currentBoard[row][col+1] == 1) {
+						isPlaceableIncline = true;
+					}else {
+						isPlaceableIncline = false;
+					}
+				}else if (row == 7) {
+					if(currentBoard[row][col-1] == 1) {
+						isPlaceableIncline = true;
+					}else {
+						isPlaceableIncline = false;
+					}
+				}else {
+					//if in between, check both sides
+					if(currentBoard[row][col+1] == 1 || currentBoard[row][col-1] == 1) {
+						isPlaceableIncline = true;						
+					}else{
+						isPlaceableIncline = false;
 					}
 				}
 
 			}else {
+				return false;
+				//if player 2
 
 			}
 		}
-
-
-
-
-		//checks vertically first
-
-
-		//iterates through currentBoard
-		for(int[] a: currentBoard) {
-			for(int element: a) {
-
-			}
-			// search up how to do for each loop for double array
-		}
-
 	}
 
 	//look at a column, row, or diagonal. If there is a piece that is the player's color is blocked by an opponent's color and there is no empty piece in between, placeable is true
