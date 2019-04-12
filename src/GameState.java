@@ -1,8 +1,11 @@
 
 public class GameState {
+
 	private Cell[][] cellArray; // current state of cells on board
 	private boolean turn; //true -> player1Turn false->player2Turn
 	int [][] currentBoard = new int[8][8];	
+
+	//Constructor
 	GameState() {
 		cellArray = new Cell[8][8];
 		for(int a = 0;a < 8; a++) {
@@ -43,7 +46,7 @@ public class GameState {
 		//potentialCell is the cell that the user is trying to use
 		int row = potentialCell.getRow();
 		int col = potentialCell.getCol();
-		
+
 		/*if anything goes wrong, make sure to check over here for any intialization issues. 
 		It was saying for all of these variables that they might not have been intialized*/
 		boolean isPlaceableHorizontal = false;
@@ -51,8 +54,9 @@ public class GameState {
 		boolean isPlaceableIncline = false;
 		boolean isPlaceableDecline = false;
 		boolean isPlaceableInclineOrDecline = false;
-		//creates a new array and sets contents in that array equal to cellArray's states
 
+
+		//creates a new array and sets contents in that array equal to cellArray's states
 		for(int rw = 0; rw < 8; rw ++) {
 			for(int cl = 0; cl< 8; cl++) {
 				currentBoard[rw][cl] = cellArray[rw][cl].getState(); 
@@ -148,9 +152,9 @@ public class GameState {
 						isPlaceableDecline = false;
 					}
 				}else{
-				
+
 					//if in between, check both sides
-					   //checks decline portion (below)		// checks incline portion (below)
+					//checks decline portion (below)		// checks incline portion (below)
 					if(currentBoard[row + 1][col+1] == 1 || currentBoard[row - 1][col + 1] == 1 
 							||currentBoard[row + 1][col - 1] == 1 || currentBoard[row - 1][col - 1] == 1) {
 						isPlaceableInclineOrDecline = true;						
@@ -161,7 +165,7 @@ public class GameState {
 
 			}else {
 				//if player 1
-				
+
 				//checks vertically
 				if(row == 0) {
 					if(currentBoard[row+1][col] == 2) {
@@ -246,9 +250,9 @@ public class GameState {
 						isPlaceableDecline = false;
 					}
 				}else{
-				
+
 					//if in between, check both sides
-					   //checks decline portion (below)		// checks incline portion (below)
+					//checks decline portion (below)		// checks incline portion (below)
 					if(currentBoard[row + 1][col+1] == 2 || currentBoard[row - 1][col + 1] == 2 
 							||currentBoard[row + 1][col - 1] == 2 || currentBoard[row - 1][col - 1] == 2) {
 						isPlaceableInclineOrDecline = true;						
@@ -260,13 +264,12 @@ public class GameState {
 		}
 		return (isPlaceableHorizontal || isPlaceableVertical || 
 				isPlaceableIncline || isPlaceableDecline || isPlaceableInclineOrDecline );
-		
+
 	}
 
 	//look at a column, row, or diagonal. If there is a piece that is the player's color is blocked by an opponent's color and there is no empty piece in between, placeable is true
 
-	// need a way to access and modify the cell array though i guess that can be done through getCellArray()
-
+	// implement these methods later I guess
 	private boolean isBlack(int rowCounter, int col) {
 		return (currentBoard[rowCounter][col]) == 2;
 	}
