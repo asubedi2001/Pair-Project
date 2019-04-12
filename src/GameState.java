@@ -43,10 +43,14 @@ public class GameState {
 		//potentialCell is the cell that the user is trying to use
 		int row = potentialCell.getRow();
 		int col = potentialCell.getCol();
-		boolean isPlaceableHorizontal;
-		boolean isPlaceableVertical;
-		boolean isPlaceableIncline;
-		boolean isPlaceableDecline;
+		
+		/*if anything goes wrong, make sure to check over here for any intialization issues. 
+		It was saying for all of these variables that they might not have been intialized*/
+		boolean isPlaceableHorizontal = false;
+		boolean isPlaceableVertical = false;
+		boolean isPlaceableIncline = false;
+		boolean isPlaceableDecline = false;
+		boolean isPlaceableInclineOrDecline = false;
 		//creates a new array and sets contents in that array equal to cellArray's states
 
 		for(int rw = 0; rw < 8; rw ++) {
@@ -107,33 +111,156 @@ public class GameState {
 
 				//check Incline TODO make sure that the edge cases are taken care of inside of the if statements. 
 				// Row 0, Row 7, Col 0, Col 7, and the rest can be placed in an else statement 
-				if(col == 0) {
-					if(currentBoard[row][col+1] == 1) {
+				if(row == 0 && col == 0) { 					//decline
+					if(currentBoard[row + 1][col + 1] == 1) {
+						isPlaceableDecline = true;
+					}else {
+						isPlaceableDecline = false;
+					}
+				}else if(row == 0 && col == 7) {
+					if(currentBoard[row +1][col-1] == 1) {
 						isPlaceableIncline = true;
 					}else {
 						isPlaceableIncline = false;
 					}
-				}else if (row == 7) {
-					if(currentBoard[row][col-1] == 1) {
+				}else if(row == 7 && col == 7){				//decline
+					if(currentBoard[row - 1][col - 1] == 1) {
+						isPlaceableDecline = true;
+					}else {
+						isPlaceableDecline = false;
+					}
+				}else if(row == 7 && col == 0){
+					if(currentBoard[row - 1][col + 1] == 1) {
 						isPlaceableIncline = true;
 					}else {
 						isPlaceableIncline = false;
 					}
-				}else {
+				}else if(col == 0){							// incline but on first coloumn
+					if(currentBoard[row - 1][col + 1] == 1) {
+						isPlaceableIncline = true;
+					}else {
+						isPlaceableIncline = false;
+					}
+				}else if(col == 7){							// decline but on last coloumn
+					if(currentBoard[row - 1][col - 1] == 1) {
+						isPlaceableDecline = true;
+					}else {
+						isPlaceableDecline = false;
+					}
+				}else{
+				
 					//if in between, check both sides
-					if(currentBoard[row][col+1] == 1 || currentBoard[row][col-1] == 1) {
-						isPlaceableIncline = true;						
+					   //checks decline portion (below)		// checks incline portion (below)
+					if(currentBoard[row + 1][col+1] == 1 || currentBoard[row - 1][col + 1] == 1 
+							||currentBoard[row + 1][col - 1] == 1 || currentBoard[row - 1][col - 1] == 1) {
+						isPlaceableInclineOrDecline = true;						
 					}else{
-						isPlaceableIncline = false;
+						isPlaceableInclineOrDecline = false;
 					}
 				}
 
 			}else {
-				return false;
-				//if player 2
+				//if player 1
+				
+				//checks vertically
+				if(row == 0) {
+					if(currentBoard[row+1][col] == 2) {
+						isPlaceableVertical = true;
+					}else {
+						isPlaceableVertical = false;
+					}
+				}else if (row == 7) {
+					if(currentBoard[row-1][col] == 2) {
+						isPlaceableVertical = true;
+					}else {
+						isPlaceableVertical = false;
+					}
+				}else {
+					//if in between, check both sides
+					if(currentBoard[row+1][col] == 2 || currentBoard[row-1][col] == 2) {
+						isPlaceableVertical = true;						
+					}else{
+						isPlaceableVertical = false;
+					}
+				}
 
+				//check horizontally
+				if(col == 0) {
+					if(currentBoard[row][col+1] == 2) {
+						isPlaceableHorizontal = true;
+					}else {
+						isPlaceableHorizontal = false;
+					}
+				}else if (row == 7) {
+					if(currentBoard[row][col-1] == 2) {
+						isPlaceableHorizontal = true;
+					}else {
+						isPlaceableHorizontal = false;
+					}
+				}else {
+					//if in between, check both sides
+					if(currentBoard[row][col+1] == 2 || currentBoard[row][col-1] == 2) {
+						isPlaceableHorizontal = true;						
+					}else{
+						isPlaceableHorizontal = false;
+					}
+				}
+
+
+				//check Incline TODO make sure that the edge cases are taken care of inside of the if statements. 
+				// Row 0, Row 7, Col 0, Col 7, and the rest can be placed in an else statement 
+				if(row == 0 && col == 0) { 					//decline
+					if(currentBoard[row + 1][col + 1] == 2) {
+						isPlaceableDecline = true;
+					}else {
+						isPlaceableDecline = false;
+					}
+				}else if(row == 0 && col == 7) {
+					if(currentBoard[row +1][col-1] == 2) {
+						isPlaceableIncline = true;
+					}else {
+						isPlaceableIncline = false;
+					}
+				}else if(row == 7 && col == 7){				//decline
+					if(currentBoard[row - 1][col - 1] == 2) {
+						isPlaceableDecline = true;
+					}else {
+						isPlaceableDecline = false;
+					}
+				}else if(row == 7 && col == 0){
+					if(currentBoard[row - 1][col + 1] == 2) {
+						isPlaceableIncline = true;
+					}else {
+						isPlaceableIncline = false;
+					}
+				}else if(col == 0){							// incline but on first coloumn
+					if(currentBoard[row - 1][col + 1] == 2) {
+						isPlaceableIncline = true;
+					}else {
+						isPlaceableIncline = false;
+					}
+				}else if(col == 7){							// decline but on last coloumn
+					if(currentBoard[row - 1][col - 1] == 2) {
+						isPlaceableDecline = true;
+					}else {
+						isPlaceableDecline = false;
+					}
+				}else{
+				
+					//if in between, check both sides
+					   //checks decline portion (below)		// checks incline portion (below)
+					if(currentBoard[row + 1][col+1] == 2 || currentBoard[row - 1][col + 1] == 2 
+							||currentBoard[row + 1][col - 1] == 2 || currentBoard[row - 1][col - 1] == 2) {
+						isPlaceableInclineOrDecline = true;						
+					}else{
+						isPlaceableInclineOrDecline = false;
+					}
+				}
 			}
 		}
+		return (isPlaceableHorizontal || isPlaceableVertical || 
+				isPlaceableIncline || isPlaceableDecline || isPlaceableInclineOrDecline );
+		
 	}
 
 	//look at a column, row, or diagonal. If there is a piece that is the player's color is blocked by an opponent's color and there is no empty piece in between, placeable is true
