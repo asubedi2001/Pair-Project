@@ -279,6 +279,10 @@ public class GameState {
 	private boolean isEmpty(int rowCounter, int col) {
 		return (currentBoard[rowCounter][col]) == 0;
 	}
+	
+	public int Winner(Player player1, Player player2) {
+		
+	}
 
 }
 
