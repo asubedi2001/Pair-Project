@@ -12,8 +12,8 @@ public class HumanPlayer extends Player {
 		private Cell[][] array = new Cell[8][8];
 		private int[][] intArray = new int[8][8];*/
 	
-	HumanPlayer(GameState game) {
-		super(game);
+	HumanPlayer(GameState game, int BlackOrWhite) {
+		super(game, BlackOrWhite);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,17 +29,7 @@ public class HumanPlayer extends Player {
 
 	}
 
-	@Override
-	int returnPoints() {
-		// TODO Auto-generated method stub
-		for(int a = 0; a < 8; a++){
-			for(int b = 0; b < 8; b++) {
-				if(intArray[a][b] == 1) {
-					 //TODO Need to see the thing on the left. Like hover over it. 
-				}
-			}
-		}
-		
-	}
+
+	
 
 }

@@ -13,8 +13,8 @@ public class ComputerPlayer extends Player{
 	private Cell[][] array = new Cell[8][8];
 	private int[][] intArray = new int[8][8];*/
 	
-	ComputerPlayer(GameState game) {
-		super(game);
+	ComputerPlayer(GameState game, int BlackOrWhite) {
+		super(game, BlackOrWhite);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -28,12 +28,6 @@ public class ComputerPlayer extends Player{
 	void selectColor() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	int returnPoints() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }
