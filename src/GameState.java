@@ -281,7 +281,13 @@ public class GameState {
 	}
 	
 	public int Winner(Player player1, Player player2) {
-		
+		if(player1.returnPoints(1) > player2.returnPoints(2)) {
+			return 1; // Player 1 (White Wins)
+		}else if(player1.returnPoints(1) < player2.returnPoints(2)) {
+			return 2; // Player 2 (Black Wins)
+		}else {
+			return 0; // 0 in this case means a draw 
+		}
 	}
 
 }
