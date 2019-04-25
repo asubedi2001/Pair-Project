@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -7,49 +8,53 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class Window {
-
-	private JFrame frame;
-	private JPanel contentPane;
-	private JPanel Menu;
-	private JLabel backgroundImg;
-
-	public Window() {
+	JPanel contentPane;
+	JFrame boardPanelFrame;
+	JLabel label;
 
 
-		frame = new JFrame("Othello");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		contentPane = new JPanel();
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-		frame.setContentPane(contentPane);
+	// KAMEHAMEHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+	// Can you add a video to a JPanel
+	//https://coderanch.com/t/667697/java/Embed-Video-JFrame
+	Window(){
 
-		frame.setVisible(true);
-		contentPane.setPreferredSize(new Dimension(1600,900));
-		
-		backgroundImg = new JLabel(new ImageIcon("img/intended GUI.png"));
-		contentPane.add(backgroundImg);
-		frame.pack();
-		frame.setResizable(false);
 
-		frame.setLocationRelativeTo(null);
-		
-		contentPane.addMouseListener(new MouseListener()
-		{
-			public void mouseClicked(MouseEvent e) {
-				//detect Cell clicked
-					//place piece
-			}
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
 
-			public void mousePressed(MouseEvent e){		
-			}
-			public void mouseReleased(MouseEvent e) {
-				
+
+		boardPanelFrame = new JFrame("BoardPanel Class");
+		contentPane = new JPanel(new GridLayout(0, 2, 10, 10));
+
+		boardPanelFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		boardPanelFrame.setContentPane(contentPane);
+
+		boardPanelFrame.pack();
+		boardPanelFrame.setSize(1600,850);
+		boardPanelFrame.setResizable(true);
+	
+
+	}
+	private static void runGUI() {
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		new BoardPanel(boardPanelFrame);
+	}
+	
+	public JFrame getJFrame() {
+		return boardPanelFrame;
+	}
+	
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				runGUI();
 			}
 		});
-		
 	}
+
+
+
+
 
 }
