@@ -1,32 +1,34 @@
 import java.awt.Graphics;
 
 public class Cell {
+	public final static int EMPTY = 0;
+	public final static int WHITE = 1;
+	public final static int BLACK = 2;
+	
 	private int cellState;
-	/*where 0 is empty
-		  1 is  white
-		  2 is  black*/
+
 	private boolean placeable;
 	private int row;
 	private int col;
-	Cell(){
-		cellState = 0;
+	public Cell() {
+		cellState = EMPTY;
 		placeable = false;
 	}
-	//the following methods are for the cellState variable
+	//getter and setters for getState
 	public int getState() {
 		return cellState;
 	}
 	public void setWhite() {
-		cellState = 1;
+		cellState = WHITE;
 	}
 	public void setBlack() {
-		cellState = 2;
+		cellState = BLACK;
 	}
 	public void setEmpty() {
-		cellState = 0;
+		cellState = EMPTY;
 	}
 	
-	//the following is for methods is for the row and col integer variables
+	//rows and columns getter and setters
 	public void setRow(int desiredRow) {
 		row = desiredRow;
 	}
@@ -43,7 +45,7 @@ public class Cell {
 		return col;
 	}
 	
-	//the following methods is for the placeable
+	//placeable getter and setter
 	public void setPlaceable(boolean isplaceable) {
 		placeable = isplaceable;
 	}
