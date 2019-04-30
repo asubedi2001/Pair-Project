@@ -1,20 +1,33 @@
 
 public class GameState {
 
-	private Cell[][] cellArray; // current state of cells on board
+	private static Cell[][] cellArray = new Cell[8][8]; // current state of cells on board
 	private boolean turn; //true -> player1Turn false->player2Turn
 	int [][] currentBoard = new int[8][8];	
 
 	//Constructor
 	GameState() {
-		cellArray = new Cell[8][8];
 		for(int a = 0;a < 8; a++) {
 			for(int b = 0; b < 8; b++) {
+				Cell temp = new Cell();
+				cellArray[a][b] = temp;
 				cellArray[a][b].setRow(a);
 				cellArray[a][b].setRow(b);
 			}
 		}
-
+		
+		//TODO garbage code, get back to this.
+		
+		for(int i=3; i<5;i++) {
+			for(int a=3;a<5;a++) {
+				if(i==a) {
+					cellArray[i][a].setWhite();
+				}else {
+					cellArray[i][a].setBlack();
+				}
+			}
+		}
+	
 	}
 
 	public void setTurn(boolean turnSet) {
@@ -25,7 +38,7 @@ public class GameState {
 		return turn;
 	}
 
-	public Cell[][] getCellArray() {
+	public static Cell[][] getCellArray() {
 		return cellArray;
 		// return the reference for the array of cells
 	}
