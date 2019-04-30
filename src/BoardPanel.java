@@ -84,16 +84,20 @@ public class BoardPanel extends JPanel {
 		int rowClicked=-1, colClicked=-1;
 		int h = this.getHeight();
 		int w = this.getWidth();
-		for(int i =0,a=7; i<8; i++) {
-			a--;
-			if( ( (xPix > (w - (w/8) * i))) && (xPix < (w - (w/8) * (i+1)) )  ){
+		
+		int cellWidth = w/8;
+		int cellHeight= h/8;
+		
+		for(int i =0, a=7; i<8; i++, a--) {
+			
+			if( ( (xPix > (w - (cellWidth) * i))) && (xPix < (w - (cellWidth) * (i+1)) )  ){
 				colClicked = a;
 			}
 		}
 		
 		for(int i =0,a=7; i<8; i++) {
 			a--;
-			if( ( (yPix > (h - (h/8) * i))) && (yPix < (h - (h/8) * (i+1)) )  ){
+			if( ( (yPix > (h - (cellHeight) * i))) && (yPix < (h - (h/8) * (i+1)) )  ){
 				colClicked = a;
 			}
 		}
