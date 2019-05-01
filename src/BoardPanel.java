@@ -50,23 +50,23 @@ public class BoardPanel extends JPanel {
 		int h = this.getHeight();
 		//draw circles:
 		for(Cell[] currentCellArray:cellArray) {
-				for(Cell currentCell:currentCellArray) {
-					blackCirc.setIcon(new ImageIcon(blackCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
-					whiteCirc.setIcon(new ImageIcon(whiteCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
-					if(currentCell.getState() == 1) {
-						JLabel whiteCopy = whiteCirc;
-						int[] coordinate = calcPixStart(currentCell);
-						this.add(whiteCopy);
-						whiteCopy.setLocation(coordinate[0], coordinate[1]);
-					}else if(currentCell.getState() == 2){
-						JLabel blackCopy = blackCirc;
-						int[] coordinate = calcPixStart(currentCell);
-						this.add(blackCopy);
-						blackCopy.setLocation(coordinate[0], coordinate[1]);
-					}
+			for(Cell currentCell:currentCellArray) {
+				blackCirc.setIcon(new ImageIcon(blackCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
+				whiteCirc.setIcon(new ImageIcon(whiteCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
+				if(currentCell.getState() == 1) {
+					JLabel whiteCopy = whiteCirc;
+					int[] coordinate = calcPixStart(currentCell);
+					this.add(whiteCopy);
+					whiteCopy.setLocation(coordinate[0], coordinate[1]);
+				}else if(currentCell.getState() == 2){
+					JLabel blackCopy = blackCirc;
+					int[] coordinate = calcPixStart(currentCell);
+					this.add(blackCopy);
+					blackCopy.setLocation(coordinate[0], coordinate[1]);
 				}
+			}
 		}
-		
+
 	}
 
 	private int[] calcPixStart(Cell given) {
@@ -80,27 +80,38 @@ public class BoardPanel extends JPanel {
 		return coordinate;
 	}
 
-	private void calcCellClicked(int xPix, int yPix) {
+	private Cell calcCellClicked(int xPix, int yPix) {
 		int rowClicked=-1, colClicked=-1;
 		int h = this.getHeight();
 		int w = this.getWidth();
-		
-		int cellWidth = w/8;
-		int cellHeight= h/8;
-		
-		for(int i =0, a=7; i<8; i++, a--) {
-			
-			if( ( (xPix > (w - (cellWidth) * i))) && (xPix < (w - (cellWidth) * (i+1)) )  ){
-				colClicked = a;
+
+		final int widthDifference = (w/8);
+		final int heightDifference = (h/8);
+
+		boolean xFound = false;
+		boolean yFound = false;
+		int row;
+		int col;
+		for(int a = 0; a < 8; a++) {
+
+			while(!xFound) {
+				xFound = (xPix <= ((w/8)*a) && xPix >= ((w/8)*a +(w/8)) );
 			}
+
+			row = a;
 		}
-		
-		for(int i =0,a=7; i<8; i++) {
-			a--;
-			if( ( (yPix > (h - (cellHeight) * i))) && (yPix < (h - (h/8) * (i+1)) )  ){
-				colClicked = a;
+
+		for(int b = 0; b < 8; b++) {
+
+			while(!yFound) {
+				yFound = (yPix <= ((h/8)*b) && yPix >= ((h/8)*b +(h/8)) );
 			}
+
+			col = b;
 		}
+
+
+
 		System.out.println(rowClicked + " " + colClicked);
 	}
 
