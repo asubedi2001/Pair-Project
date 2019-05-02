@@ -80,8 +80,8 @@ public class BoardPanel extends JPanel {
 		return coordinate;
 	}
 
+	// Just returns the Cell. You can retrieve the Cell's location using getRow and getCol. Or you can return an int[] with 2 values.
 	private Cell calcCellClicked(int xPix, int yPix) {
-		int rowClicked=-1, colClicked=-1;
 		int h = this.getHeight();
 		int w = this.getWidth();
 
@@ -92,27 +92,32 @@ public class BoardPanel extends JPanel {
 		boolean yFound = false;
 		int row;
 		int col;
+
+		Cell cell = new Cell();
+
+
 		for(int a = 0; a < 8; a++) {
 
 			while(!xFound) {
-				xFound = (xPix <= ((w/8)*a) && xPix >= ((w/8)*a +(w/8)) );
+				xFound = (xPix <= ((widthDifference)*a) && xPix >= ((widthDifference)*a +(widthDifference)) );
 			}
 
 			row = a;
+			cell.setRow(a);
 		}
 
 		for(int b = 0; b < 8; b++) {
 
 			while(!yFound) {
-				yFound = (yPix <= ((h/8)*b) && yPix >= ((h/8)*b +(h/8)) );
+				yFound = (yPix <= ((heightDifference)*b) && yPix >= ((heightDifference)*b +(heightDifference)) );
 			}
 
 			col = b;
+			cell.setCol(b);
+
 		}
 
-
-
-		System.out.println(rowClicked + " " + colClicked);
+		return cell;
 	}
 
 	public BoardPanel() {
