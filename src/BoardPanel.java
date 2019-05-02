@@ -1,4 +1,6 @@
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 
@@ -12,20 +14,21 @@ public class BoardPanel extends JPanel {
 	private JLabel blackCirc = new JLabel(blackCircIcon);
 	private JLabel whiteCirc = new JLabel(whiteCircIcon);
 
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		int w = this.getWidth();
 		int h = this.getHeight();
+		Graphics2D G = (Graphics2D) g;
 		// TODO when u have gui buttons, make sure to shift the bottom/right-most line
 		// down/right 1 pixel again
 
 		for (int i = 0; i < 9; i++) {
 			// draw horz lines
 			if (i < 8 && i > 0) {
-				g.drawLine(0, h - ((h / 8) * i), w, h - ((h / 8) * i));
+				G.drawLine(0, h - ((h / 8) * i), w, h - ((h / 8) * i));
 			} else if (i == 8) {
-				g.drawLine(0, 0, w, 0);
+				G.drawLine(0, 0, w, 0);
 			} else {
-				g.drawLine(0, h - 1, w, h - 1);
+				G.drawLine(0, h - 1, w, h - 1);
 			}
 
 		}
@@ -33,36 +36,23 @@ public class BoardPanel extends JPanel {
 		for (int i = 0; i < 9; i++) {
 			// draw vert lines
 			if (i < 8 && i > 0) {
-				g.drawLine(w - ((w / 8) * i), 0, w - ((w / 8) * i), h);
+				G.drawLine(w - ((w / 8) * i), 0, w - ((w / 8) * i), h);
 			} else if (i == 8) {
-				g.drawLine(0, 0, 0, h);
+				G.drawLine(0, 0, 0, h);
 			} else {
-				g.drawLine(w - 1, 0, w - 1, h);
+				G.drawLine(w - 1, 0, w - 1, h);
 			}
-
+		
 		}
-
-	}
-
-	public void repaint(Cell[][] cellArray) {
-		this.paint(this.getGraphics());
-		int w = this.getWidth();
-		int h = this.getHeight();
-		//draw circles:
-		for(Cell[] currentCellArray:cellArray) {
+		
+		for(Cell[] currentCellArray:GameState.getCellArray()) {
 			for(Cell currentCell:currentCellArray) {
-				blackCirc.setIcon(new ImageIcon(blackCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
-				whiteCirc.setIcon(new ImageIcon(whiteCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
 				if(currentCell.getState() == 1) {
-					JLabel whiteCopy = whiteCirc;
 					int[] coordinate = calcPixStart(currentCell);
-					this.add(whiteCopy);
-					whiteCopy.setLocation(coordinate[0], coordinate[1]);
+					G.drawOval(coordinate[0], coordinate[1], w/8, h/8);
 				}else if(currentCell.getState() == 2){
-					JLabel blackCopy = blackCirc;
 					int[] coordinate = calcPixStart(currentCell);
-					this.add(blackCopy);
-					blackCopy.setLocation(coordinate[0], coordinate[1]);
+					G.fillOval(coordinate[0], coordinate[1], w/8, h/8);
 				}
 			}
 		}
@@ -75,60 +65,57 @@ public class BoardPanel extends JPanel {
 		int w = this.getWidth();
 		int xCell = given.getCol();
 		int yCell = given.getRow();
-		coordinate[0] = w - ((8 - xCell) - (w / 8));
-		coordinate[1] = h - ((8 - yCell) - (h / 8));
+		coordinate[0] = w - ( (8 - xCell)*(w / 8) );
+		coordinate[1] = h - ((8 - yCell)*(h / 8));
 		return coordinate;
+		
 	}
 
 	// Just returns the Cell. You can retrieve the Cell's location using getRow and getCol. Or you can return an int[] with 2 values.
 	private Cell calcCellClicked(int xPix, int yPix) {
-		int h = this.getHeight();
-		int w = this.getWidth();
+			int h = this.getHeight();
+			int w = this.getWidth();
 
-		final int widthDifference = (w/8);
-		final int heightDifference = (h/8);
+			final int widthDifference = (w/8);
+			final int heightDifference = (h/8);
 
-		boolean xFound = false;
-		boolean yFound = false;
-		int row;
-		int col;
+			boolean xFound = false;
+			boolean yFound = false;
+			int row;
+			int col;
 
-		Cell cell = new Cell();
+			Cell cell = new Cell();
 
 
-		for(int a = 0; a < 8; a++) {
+			for(int a = 0; a < 8; a++) {
 
-			while(!xFound) {
-				xFound = (xPix <= ((widthDifference)*a) && xPix >= ((widthDifference)*a +(widthDifference)) );
+				while(!xFound) {
+					xFound = (xPix <= ((widthDifference)*a) && xPix >= ((widthDifference)*a +(widthDifference)) );
+				}
+
+				row = a;
+				cell.setRow(a);
 			}
 
-			row = a;
-			cell.setRow(a);
-		}
+			for(int b = 0; b < 8; b++) {
 
-		for(int b = 0; b < 8; b++) {
+				while(!yFound) {
+					yFound = (yPix <= ((heightDifference)*b) && yPix >= ((heightDifference)*b +(heightDifference)) );
+				}
 
-			while(!yFound) {
-				yFound = (yPix <= ((heightDifference)*b) && yPix >= ((heightDifference)*b +(heightDifference)) );
+				col = b;
+				cell.setCol(b);
+
 			}
 
-			col = b;
-			cell.setCol(b);
-
+			return cell;
 		}
-
-		return cell;
-	}
 
 	public BoardPanel() {
 
 	}
 
 	void mouseListener(MouseEvent e) {
-
-	}
-
-	public void paintComponent(Graphics g) {
 
 	}
 
