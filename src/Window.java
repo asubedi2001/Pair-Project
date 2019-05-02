@@ -15,10 +15,10 @@ public class Window {
 	private JPanel Menu;
 	private JLabel backgroundImg;
 	private BoardPanel board;
-	private GameState thisState;
+	private GameState state;
 
 	public Window() {
-		thisState = new GameState();
+		state = new GameState();
 		board = new BoardPanel();
 		
 		frame = new JFrame("Othello");
@@ -37,14 +37,25 @@ public class Window {
 
 		frame.setLocationRelativeTo(null);
 		
-		board.addMouseListener(new MouseListener()
+		contentPane.addMouseListener(new MouseListener()
 		{
 			public void mouseClicked(MouseEvent e) {
-				//detect Cell clicked
-					//place piece
-				/*frame.repaint();
-				board.repaint(thisState.getCellArray());*/
+				int x = e.getX();
+				int y = e.getY();
+				
+				Cell z = board.calcCellClicked(x,y);
+				int cellCol = z.getCol();
+				int cellRow = z.getRow();
+				Cell[][] copyCellArray = GameState.getCellArray();
+				if(state.isPlaceable(copyCellArray[cellRow][cellCol])) {
+					if(state.getTurn()) {
+						GameState.getCellArray()[cellRow][cellCol].setWhite();
+					}else {
+						GameState.getCellArray()[cellRow][cellCol].setBlack();
+					}
+				}
 			}
+			
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
 
