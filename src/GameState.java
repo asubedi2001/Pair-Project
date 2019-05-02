@@ -1,6 +1,7 @@
 
 public class GameState {
 
+	//double check if static is correct. I think it is. 
 	private static Cell[][] cellArray = new Cell[8][8]; // current state of cells on board
 	private boolean turn; //true -> player1Turn false->player2Turn
 	int [][] currentBoard = new int[8][8];	
@@ -9,18 +10,17 @@ public class GameState {
 	GameState() {
 		for(int a = 0;a < 8; a++) {
 			for(int b = 0; b < 8; b++) {
-				Cell temp = new Cell();
-				cellArray[a][b] = temp;
+				cellArray[a][b] = new Cell();
+				//sets the row and col 
 				cellArray[a][b].setRow(a);
-				cellArray[a][b].setRow(b);
+				cellArray[a][b].setCol(b);
 			}
 		}
-		
-		//TODO garbage code, get back to this.
-		
-		for(int i=3; i<5;i++) {
-			for(int a=3;a<5;a++) {
-				if(i==a) {
+				
+		//Initialize the states of the beginning pieces (pieces in the middle)
+		for(int i = 3; i < 5; i++) {
+			for(int a = 3; a<5; a++) {
+				if(i == a) {
 					cellArray[i][a].setWhite();
 				}else {
 					cellArray[i][a].setBlack();
@@ -76,6 +76,7 @@ public class GameState {
 			}
 		}
 
+		
 		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
 		if(potentialCell.getState() == 0 ) {
 			if(!turn) {

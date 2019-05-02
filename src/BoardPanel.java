@@ -50,23 +50,23 @@ public class BoardPanel extends JPanel {
 		int h = this.getHeight();
 		//draw circles:
 		for(Cell[] currentCellArray:cellArray) {
-				for(Cell currentCell:currentCellArray) {
-					blackCirc.setIcon(new ImageIcon(blackCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
-					whiteCirc.setIcon(new ImageIcon(whiteCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
-					if(currentCell.getState() == 1) {
-						JLabel whiteCopy = whiteCirc;
-						int[] coordinate = calcPixStart(currentCell);
-						this.add(whiteCopy);
-						whiteCopy.setLocation(coordinate[0], coordinate[1]);
-					}else if(currentCell.getState() == 2){
-						JLabel blackCopy = blackCirc;
-						int[] coordinate = calcPixStart(currentCell);
-						this.add(blackCopy);
-						blackCopy.setLocation(coordinate[0], coordinate[1]);
-					}
+			for(Cell currentCell:currentCellArray) {
+				blackCirc.setIcon(new ImageIcon(blackCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
+				whiteCirc.setIcon(new ImageIcon(whiteCircIcon.getImage().getScaledInstance(w/8, h/8, Image.SCALE_SMOOTH)));
+				if(currentCell.getState() == 1) {
+					JLabel whiteCopy = whiteCirc;
+					int[] coordinate = calcPixStart(currentCell);
+					this.add(whiteCopy);
+					whiteCopy.setLocation(coordinate[0], coordinate[1]);
+				}else if(currentCell.getState() == 2){
+					JLabel blackCopy = blackCirc;
+					int[] coordinate = calcPixStart(currentCell);
+					this.add(blackCopy);
+					blackCopy.setLocation(coordinate[0], coordinate[1]);
 				}
+			}
 		}
-		
+
 	}
 
 	private int[] calcPixStart(Cell given) {
@@ -80,24 +80,44 @@ public class BoardPanel extends JPanel {
 		return coordinate;
 	}
 
-	private void calcCellClicked(int xPix, int yPix) {
-		int rowClicked=-1, colClicked=-1;
+	// Just returns the Cell. You can retrieve the Cell's location using getRow and getCol. Or you can return an int[] with 2 values.
+	private Cell calcCellClicked(int xPix, int yPix) {
 		int h = this.getHeight();
 		int w = this.getWidth();
-		for(int i =0,a=7; i<8; i++) {
-			a--;
-			if( ( (xPix > (w - (w/8) * i))) && (xPix < (w - (w/8) * (i+1)) )  ){
-				colClicked = a;
+
+		final int widthDifference = (w/8);
+		final int heightDifference = (h/8);
+
+		boolean xFound = false;
+		boolean yFound = false;
+		int row;
+		int col;
+
+		Cell cell = new Cell();
+
+
+		for(int a = 0; a < 8; a++) {
+
+			while(!xFound) {
+				xFound = (xPix <= ((widthDifference)*a) && xPix >= ((widthDifference)*a +(widthDifference)) );
 			}
+
+			row = a;
+			cell.setRow(a);
 		}
-		
-		for(int i =0,a=7; i<8; i++) {
-			a--;
-			if( ( (yPix > (h - (h/8) * i))) && (yPix < (h - (h/8) * (i+1)) )  ){
-				colClicked = a;
+
+		for(int b = 0; b < 8; b++) {
+
+			while(!yFound) {
+				yFound = (yPix <= ((heightDifference)*b) && yPix >= ((heightDifference)*b +(heightDifference)) );
 			}
+
+			col = b;
+			cell.setCol(b);
+
 		}
-		System.out.println(rowClicked + " " + colClicked);
+
+		return cell;
 	}
 
 	public BoardPanel() {
