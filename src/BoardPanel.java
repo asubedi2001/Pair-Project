@@ -14,7 +14,7 @@ public class BoardPanel extends JPanel {
 	private JLabel blackCirc = new JLabel(blackCircIcon);
 	private JLabel whiteCirc = new JLabel(whiteCircIcon);
 
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		int w = this.getWidth();
 		int h = this.getHeight();
 		Graphics2D G = (Graphics2D) g;
@@ -42,10 +42,9 @@ public class BoardPanel extends JPanel {
 			} else {
 				G.drawLine(w - 1, 0, w - 1, h);
 			}
-
+		
 		}
 		
-		G.drawOval(w/8, h/8, w/8, h/8);
 		for(Cell[] currentCellArray:GameState.getCellArray()) {
 			for(Cell currentCell:currentCellArray) {
 				if(currentCell.getState() == 1) {
@@ -56,7 +55,7 @@ public class BoardPanel extends JPanel {
 					G.fillOval(coordinate[0], coordinate[1], w/8, h/8);
 				}
 			}
-	}
+		}
 
 	}
 
@@ -66,40 +65,57 @@ public class BoardPanel extends JPanel {
 		int w = this.getWidth();
 		int xCell = given.getCol();
 		int yCell = given.getRow();
-		coordinate[0] = w - ((8 - xCell) - (w / 8));
-		coordinate[1] = h - ((8 - yCell) - (h / 8));
+		coordinate[0] = w - ( (8 - xCell)*(w / 8) );
+		coordinate[1] = h - ((8 - yCell)*(h / 8));
 		return coordinate;
+		
 	}
 
-	private void calcCellClicked(int xPix, int yPix) {
-		int rowClicked=-1, colClicked=-1;
-		int h = this.getHeight();
-		int w = this.getWidth();
-		for(int i =0,a=7; i<8; i++) {
-			a--;
-			if( ( (xPix > (w - (w/8) * i))) && (xPix < (w - (w/8) * (i+1)) )  ){
-				colClicked = a;
+	// Just returns the Cell. You can retrieve the Cell's location using getRow and getCol. Or you can return an int[] with 2 values.
+	private Cell calcCellClicked(int xPix, int yPix) {
+			int h = this.getHeight();
+			int w = this.getWidth();
+
+			final int widthDifference = (w/8);
+			final int heightDifference = (h/8);
+
+			boolean xFound = false;
+			boolean yFound = false;
+			int row;
+			int col;
+
+			Cell cell = new Cell();
+
+
+			for(int a = 0; a < 8; a++) {
+
+				while(!xFound) {
+					xFound = (xPix <= ((widthDifference)*a) && xPix >= ((widthDifference)*a +(widthDifference)) );
+				}
+
+				row = a;
+				cell.setRow(a);
 			}
-		}
-		
-		for(int i =0,a=7; i<8; i++) {
-			a--;
-			if( ( (yPix > (h - (h/8) * i))) && (yPix < (h - (h/8) * (i+1)) )  ){
-				rowClicked = a;
+
+			for(int b = 0; b < 8; b++) {
+
+				while(!yFound) {
+					yFound = (yPix <= ((heightDifference)*b) && yPix >= ((heightDifference)*b +(heightDifference)) );
+				}
+
+				col = b;
+				cell.setCol(b);
+
 			}
+
+			return cell;
 		}
-		System.out.println(rowClicked + " " + colClicked);
-	}
 
 	public BoardPanel() {
 
 	}
 
 	void mouseListener(MouseEvent e) {
-
-	}
-
-	public void paintComponent(Graphics g) {
 
 	}
 

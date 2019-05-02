@@ -9,10 +9,10 @@ public class GameState {
 	GameState() {
 		for(int a = 0;a < 8; a++) {
 			for(int b = 0; b < 8; b++) {
-				Cell temp = new Cell();
-				cellArray[a][b] = temp;
+				cellArray[a][b] = new Cell();
 				cellArray[a][b].setRow(a);
-				cellArray[a][b].setRow(b);
+				cellArray[a][b].setCol(b);
+			
 			}
 		}
 		
