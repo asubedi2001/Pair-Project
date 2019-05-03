@@ -41,6 +41,15 @@ public class Window {
 		contentPane.addMouseListener(new MouseListener()
 		{
 			public void mouseClicked(MouseEvent e) {
+				
+			}
+			
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+
+			public void mousePressed(MouseEvent e){		
+			}
+			public void mouseReleased(MouseEvent e) {
 				int x = e.getX();
 				int y = e.getY();
 				
@@ -59,15 +68,6 @@ public class Window {
 					state.setTurn(!state.getTurn());
 					board.repaint();
 				}
-			}
-			
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
-
-			public void mousePressed(MouseEvent e){		
-			}
-			public void mouseReleased(MouseEvent e) {
-				
 			}
 		});
 		
