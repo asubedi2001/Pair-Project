@@ -1,5 +1,4 @@
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -8,53 +7,65 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class Window {
-	JPanel contentPane;
-	JFrame boardPanelFrame;
-	JLabel label;
 
+	private JFrame frame;
+	private JPanel contentPane;
+	private JPanel Menu;
+	private JLabel backgroundImg;
+	private BoardPanel board;
+	private GameState state;
 
-	// KAMEHAMEHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-	// Can you add a video to a JPanel
-	//https://coderanch.com/t/667697/java/Embed-Video-JFrame
-	Window(){
+	public Window() {
+		state = new GameState();
+		board = new BoardPanel();
+		
+		frame = new JFrame("Othello");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		contentPane = new JPanel();
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		frame.setContentPane(contentPane);
 
+		frame.setVisible(true);
+		contentPane.setPreferredSize(new Dimension(1600,900));
+		
+		backgroundImg = new JLabel(new ImageIcon("img/intended GUI.png"));
+		contentPane.add(board);
+		frame.pack();
+		frame.setResizable(true);
 
+		frame.setLocationRelativeTo(null);
+		
+		contentPane.addMouseListener(new MouseListener()
+		{
+			public void mouseClicked(MouseEvent e) {
+				int x = e.getX();
+				int y = e.getY();
+				
+				Cell z = board.calcCellClicked(x,y);
+				int cellCol = z.getCol();
+				int cellRow = z.getRow();
+				Cell[][] copyCellArray = GameState.getCellArray();
+				if(state.isPlaceable(copyCellArray[cellRow][cellCol])) {
+					if(state.getTurn()) {
+						GameState.getCellArray()[cellRow][cellCol].setWhite();
+					}else {
+						GameState.getCellArray()[cellRow][cellCol].setBlack();
+					}
+				}
+			}
+			
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
 
-
-		boardPanelFrame = new JFrame("BoardPanel Class");
-		contentPane = new JPanel(new GridLayout(0, 2, 10, 10));
-
-		boardPanelFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		boardPanelFrame.setContentPane(contentPane);
-
-		boardPanelFrame.pack();
-		boardPanelFrame.setSize(1600,850);
-		boardPanelFrame.setResizable(true);
-	
-
-	}
-	private static void runGUI() {
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		new BoardPanel(boardPanelFrame);
-	}
-	
-	public JFrame getJFrame() {
-		return boardPanelFrame;
-	}
-	
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				runGUI();
+			public void mousePressed(MouseEvent e){		
+			}
+			public void mouseReleased(MouseEvent e) {
+				
 			}
 		});
+		
 	}
-
-
-
-
 
 }
