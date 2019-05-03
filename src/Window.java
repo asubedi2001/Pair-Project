@@ -16,6 +16,7 @@ public class Window {
 	private JLabel backgroundImg;
 	private BoardPanel board;
 	private GameState state;
+	private JLabel score;
 
 	public Window() {
 		state = new GameState();
@@ -48,11 +49,15 @@ public class Window {
 				int cellRow = z.getRow();
 				Cell[][] copyCellArray = GameState.getCellArray();
 				if(state.isPlaceable(copyCellArray[cellRow][cellCol])) {
+					System.out.println(cellRow + " " + cellCol);
 					if(state.getTurn()) {
-						GameState.getCellArray()[cellRow][cellCol].setWhite();
+						GameState.getCellArray()[cellRow][cellCol].setWhite();	
 					}else {
 						GameState.getCellArray()[cellRow][cellCol].setBlack();
 					}
+					System.out.println(GameState.getCellArray()[cellRow][cellCol].getRow() + " " + GameState.getCellArray()[cellRow][cellCol].getCol());
+					state.setTurn(!state.getTurn());
+					board.repaint();
 				}
 			}
 			
