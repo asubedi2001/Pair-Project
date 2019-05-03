@@ -15,7 +15,8 @@ public class BoardPanel extends JPanel {
     private JLabel whiteCirc = new JLabel(whiteCircIcon);
 
     public void paintComponent(Graphics g) {
-        int w = this.getWidth();
+        super.paintComponent(g);
+    	int w = this.getWidth();
         int h = this.getHeight();
         Graphics2D G = (Graphics2D) g;
         // TODO when u have gui buttons, make sure to shift the bottom/right-most line
@@ -65,8 +66,8 @@ public class BoardPanel extends JPanel {
         int w = this.getWidth();
         int xCell = given.getCol();
         int yCell = given.getRow();
-        coordinate[0] = w - ((8 - xCell) * (w / 8));
-        coordinate[1] = h - ((8 - yCell) * (h / 8));
+        coordinate[0] = (w/8) * xCell;
+        coordinate[1] = (h/8) * yCell;
         return coordinate;
 
     }
@@ -114,14 +115,6 @@ public class BoardPanel extends JPanel {
     }
 
     public BoardPanel() {
-
-    }
-
-    void mouseListener(MouseEvent e) {
-
-    }
-
-    public void setMode(boolean solvingMode) {
 
     }
 
