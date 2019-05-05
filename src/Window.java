@@ -22,6 +22,7 @@ public class Window {
 		state = new GameState();
 		board = new BoardPanel();
 		frame = new JFrame("Othello");
+
 		contentPane = new JPanel();
 
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
@@ -35,25 +36,20 @@ public class Window {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		
-		contentPane.addMouseListener(new MouseListener()
-		{
-			public void mouseClicked(MouseEvent e) {	
-			}
-			
+		contentPane.addMouseListener(new MouseListener()	{
+			public void mouseClicked(MouseEvent e) {}
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-
-			public void mousePressed(MouseEvent e){		
-			}
+			public void mousePressed(MouseEvent e) {}
 			public void mouseReleased(MouseEvent e) {
 				int x = e.getX();
-				int y = e.getY();
-				
+				int y = e.getY();	
 				Cell z = board.calcCellClicked(x,y);
 				int cellCol = z.getCol();
 				int cellRow = z.getRow();
 				Cell[][] copyCellArray = GameState.getCellArray();
-				if(state.isPlaceable(copyCellArray[cellRow][cellCol])) {
+				
+				if(x < contentPane.getWidth() && x > 0 && y < contentPane.getHeight() && y > 0 && state.isPlaceable(copyCellArray[cellRow][cellCol])) {
 					if(state.getTurn()) {
 						GameState.getCellArray()[cellRow][cellCol].setWhite();	
 					}else {
@@ -64,7 +60,5 @@ public class Window {
 				}
 			}
 		});
-		
 	}
-
 }
