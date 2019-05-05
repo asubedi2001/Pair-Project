@@ -3,9 +3,9 @@ public class GameState {
 
 	//double check if static is correct. I think it is. 
 	private static Cell[][] cellArray = new Cell[8][8]; // current state of cells on board
-	private boolean turn; //true -> player1Turn false->player2Turn
+	private static boolean turn; //true -> player1Turn false->player2Turn
 	private static boolean[][] placeableArray = new boolean[8][8];
-	int [][] currentBoard = new int[8][8];	
+	private static int[][] currentBoard = new int[8][8];	
 	
 	
 	//Constructor
@@ -16,6 +16,9 @@ public class GameState {
 				//sets the row and col 
 				cellArray[a][b].setRow(a);
 				cellArray[a][b].setCol(b);
+				
+				placeableArray[a][b] = false;
+				currentBoard[a][b] = 0;
 			}
 		}
 				
@@ -23,13 +26,17 @@ public class GameState {
 		for(int i = 3; i < 5; i++) {
 			for(int a = 3; a<5; a++) {
 				if(i == a) {
+					currentBoard[i][a] = Cell.WHITE;
 					cellArray[i][a].setWhite();
 				}else {
+					currentBoard[i][a] = Cell.BLACK;
 					cellArray[i][a].setBlack();
 				}
 			}
 		}
 	
+		turn = false;
+		
 	}
 
 	public static boolean[][] getPlaceableArray() {
@@ -60,6 +67,19 @@ public class GameState {
 
 	}
 
+	//call this at the end of isPlaceable
+	private void updatePlaceableArray() {
+		for(int i=0; i<8; i++) {
+			for(int a=0; a<8; a++) {
+				if(isPlaceable(cellArray[i][a])) {
+					placeableArray[i][a] = true;
+				}else {
+					placeableArray[i][a] = false;
+				}
+			}
+		}
+	}
+	
 	// Should create an array for this that has a true and false for each player. This should be only a couple lines long
 	public boolean isPlaceable(Cell potentialCell) {
 		//potentialCell is the cell that the user is trying to use
@@ -176,7 +196,7 @@ public class GameState {
 					//if in between, check both sides
 					//checks decline portion (below)		// checks incline portion (below)
 					if(currentBoard[row + 1][col+1] == 1 || currentBoard[row - 1][col + 1] == 1 
-							||currentBoard[row + 1][col - 1] == 1 || currentBoard[row - 1][col - 1] == 1) {
+							||currentBoard[row + 1][col - 1] == 1 || currentBoard[row+1][col - 1] == 1) {
 						isPlaceableInclineOrDecline = true;						
 					}else{
 						isPlaceableInclineOrDecline = false;
