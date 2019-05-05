@@ -4,8 +4,10 @@ public class GameState {
 	//double check if static is correct. I think it is. 
 	private static Cell[][] cellArray = new Cell[8][8]; // current state of cells on board
 	private boolean turn; //true -> player1Turn false->player2Turn
+	private static boolean[][] placeableArray = new boolean[8][8];
 	int [][] currentBoard = new int[8][8];	
-
+	
+	
 	//Constructor
 	GameState() {
 		for(int a = 0;a < 8; a++) {
@@ -30,6 +32,10 @@ public class GameState {
 	
 	}
 
+	public static boolean[][] getPlaceableArray() {
+		return placeableArray;
+	}
+	
 	public void setTurn(boolean turnSet) {
 		turn = turnSet;
 	}
