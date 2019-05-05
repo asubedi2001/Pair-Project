@@ -68,9 +68,14 @@ public class BoardPanel extends JPanel {
         int yCell = given.getRow();
         coordinate[0] = (w/8) * xCell;
         coordinate[1] = (h/8) * yCell;
+      //  flipOverYEqualsNegX(coordinate);
         return coordinate;
 
     }
+    
+    /*private int[] flipOverYEqualsNegX(int[] flipThis) {
+    	
+    }*/
 
     // Just returns the Cell. You can retrieve the Cell's location using getRow and getCol. Or you can return an int[] with 2 values.
     public Cell calcCellClicked(int xPix, int yPix) {
@@ -92,7 +97,7 @@ public class BoardPanel extends JPanel {
 
             if (!xFound) {
                 xFound = (xPix >= ((widthDifference) * a) && xPix <= ((widthDifference) * a + (widthDifference)));
-                cell.setRow(a);
+                cell.setCol(a);
             }
 
 
@@ -105,7 +110,7 @@ public class BoardPanel extends JPanel {
             if (!yFound) {
                 yFound = (yPix >= ((heightDifference) * b) && yPix <= ((heightDifference) * b + (heightDifference)));
 
-                cell.setCol(b);
+                cell.setRow(b);
             }
            // System.out.println("Y Interation: " + b + "  yFound: " + yFound);
 
