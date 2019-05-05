@@ -288,17 +288,6 @@ public class GameState {
 	}
 
 	//look at a column, row, or diagonal. If there is a piece that is the player's color is blocked by an opponent's color and there is no empty piece in between, placeable is true
-
-/*	// implement these methods later I guess
-	private boolean isBlack(int rowCounter, int col) {
-		return (currentBoard[rowCounter][col]) == 2;
-	}
-	private boolean isWhite(int rowCounter, int col) {
-		return (currentBoard[rowCounter][col]) == 1;
-	}
-	private boolean isEmpty(int rowCounter, int col) {
-		return (currentBoard[rowCounter][col]) == 0;
-	}*/
 	
 	public int Winner(Player player1, Player player2) {
 		if(player1.returnPoints(1) > player2.returnPoints(2)) {
