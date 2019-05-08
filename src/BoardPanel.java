@@ -99,8 +99,6 @@ public class BoardPanel extends JPanel {
                 xFound = (xPix >= ((widthDifference) * a) && xPix <= ((widthDifference) * a + (widthDifference)));
                 cell.setCol(a);
             }
-
-
            // System.out.println("X Interation: " + a + "  xFound: " + xFound);
 
         }
