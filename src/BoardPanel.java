@@ -19,9 +19,9 @@ public class BoardPanel extends JPanel {
     	int w = this.getWidth();
         int h = this.getHeight();
         Graphics2D G = (Graphics2D) g;
-        // TODO when u have gui buttons, make sure to shift the bottom/right-most line
-        // down/right 1 pixel again
-
+        boolean[][] placeable = GameState.getPlaceableArray();
+        
+        //draw lines
         for (int i = 0; i < 9; i++) {
             // draw horz lines
             if (i < 8 && i > 0) {
@@ -34,6 +34,7 @@ public class BoardPanel extends JPanel {
 
         }
 
+        //draw lines
         for (int i = 0; i < 9; i++) {
             // draw vert lines
             if (i < 8 && i > 0) {
@@ -46,6 +47,7 @@ public class BoardPanel extends JPanel {
 
         }
 
+        //draw board pieces
         for (Cell[] currentCellArray : GameState.getCellArray()) {
             for (Cell currentCell : currentCellArray) {
                 if (currentCell.getState() == 1) {
@@ -57,7 +59,15 @@ public class BoardPanel extends JPanel {
                 }
             }
         }
-
+        
+        for(int i=0; i<8; i++) {
+        	for(int a=0; a<8;a++) {
+        		if(placeable[i][a]) {
+        			int[] coordinate = calcPixStart(GameState.getCellArray()[i][a]);
+        			G.fillRect(coordinate[0], coordinate[1], w/8, h/8);
+        		}
+        	}
+        }
     }
 
     private int[] calcPixStart(Cell given) {
