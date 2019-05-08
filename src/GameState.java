@@ -61,7 +61,7 @@ public class GameState {
 	}
 	private int playerTurn(boolean turn) {
 		if(turn) {
-			return 1; 
+			return 1; //return white int 
 		}else {
 			return 2;
 		}
