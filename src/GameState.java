@@ -91,7 +91,7 @@ public class GameState {
 
 		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
 		if(potentialCell.getState() == 0 ) {
-
+// what the cuk
 			for(int a = 0; a < 8; a++) {
 				if(a < 7 && (row+a > 7 || col+a > 7)) {
 					if(currentBoard[row - (7-a)][col - (7-a)] == playerTurn(!turn)) {
