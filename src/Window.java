@@ -27,14 +27,16 @@ public class Window {
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 		contentPane.setPreferredSize(new Dimension(1600,900));
 		contentPane.add(board);
-		
+
+
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(contentPane);
 		frame.pack();
 		frame.setResizable(true);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-		
+
+		state.setTurn(true);
 		contentPane.addMouseListener(new MouseListener()
 		{
 			public void mouseClicked(MouseEvent e) {	
@@ -52,10 +54,11 @@ public class Window {
 				Cell z = board.calcCellClicked(x,y);
 				int cellCol = z.getCol();
 				int cellRow = z.getRow();
+				System.out.println(cellRow + " " + cellCol);
 				Cell[][] copyCellArray = GameState.getCellArray();
 				if(state.isPlaceable(copyCellArray[cellRow][cellCol])) {
 					if(state.getTurn()) {
-						GameState.getCellArray()[cellRow][cellCol].setWhite();	
+						GameState.getCellArray()[cellRow][cellCol].setWhite();
 					}else {
 						GameState.getCellArray()[cellRow][cellCol].setBlack();
 					}

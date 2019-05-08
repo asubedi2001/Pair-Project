@@ -1,6 +1,5 @@
 
 public class GameState {
-
 	//double check if static is correct. I think it is. 
 	private static Cell[][] cellArray = new Cell[8][8]; // current state of cells on board
 	private boolean turn; //true -> player1Turn false->player2Turn
@@ -92,6 +91,48 @@ public class GameState {
 		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
 		if(potentialCell.getState() == 0 ) {
 // what the cuk
+      
+      // If it contains same piece vertically
+            for (int a = 0; a < 8; a++) {
+                if(row-1 < 0){
+                    if (currentBoard[a][col] == playerTurn &&  currentBoard[row+1][col] == playerTurn(!turn) ) {
+                        System.out.println("Row: " + row + " " + "Col: " + col );
+                        return true;
+                    }
+                }else if(row+1 > 7){
+                    if (currentBoard[a][col] == playerTurn &&  currentBoard[row-1][col] == playerTurn(!turn) ) {
+                        System.out.println("Row: " + row + " " + "Col: " + col );
+                        return true;
+                    }
+                }else{
+                    if (currentBoard[a][col] == playerTurn && (currentBoard[row-1][col] == playerTurn(!turn) || currentBoard[row+1][col] == playerTurn(!turn) )) {
+                        System.out.println("Row: " + row + " " + "Col: " + col );
+                        return true;
+                    }
+                }
+
+            }
+
+            for (int a = 0; a < 8; a++) {
+                if(col-1 < 0){
+                    if (currentBoard[row][a] == playerTurn &&  currentBoard[row][col+1] == playerTurn(!turn) ) {
+                        System.out.println("Row: " + row + " " + "Col: " + col );
+                        return true;
+                    }
+                }else if(col+1 > 7){
+                    if (currentBoard[row][a] == playerTurn &&  currentBoard[row][col-1] == playerTurn(!turn) ) {
+                        System.out.println("Row: " + row + " " + "Col: " + col );
+                        return true;
+                    }
+                }else{
+                    if (currentBoard[row][a] == playerTurn && (currentBoard[row][col+1] == playerTurn(!turn) || currentBoard[row][col-1] == playerTurn(!turn) )) {
+                        System.out.println("Row: " + row + " " + "Col: " + col );
+                        return true;
+                    }
+                }
+
+            }
+      
 			for(int a = 0; a < 8; a++) {
 				if(a < 7 && (row+a > 7 || col+a > 7)) {
 					if(currentBoard[row - (7-a)][col - (7-a)] == playerTurn(!turn)) {
@@ -113,33 +154,7 @@ public class GameState {
 		}else {
 			return false;
 		}
-		//player 2 (Black)
-
-		//checks vertically
-		/*	if(row == 0) {
-					if(currentBoard[row+1][col] == 1) {
-						isPlaceableVertical = true;
-					}else {
-						isPlaceableVertical = false;
-					}
-				}else if (row == 7) {
-					if(currentBoard[row-1][col] == 1) {
-						isPlaceableVertical = true;
-					}else {
-						isPlaceableVertical = false;
-					}
-				}else {
-					//if in between, check both sides
-					if(currentBoard[row+1][col] == 1 || currentBoard[row-1][col] == 1) {
-						isPlaceableVertical = true;						
-					}else{
-						isPlaceableVertical = false;
-					}
-				}*/
-
-		//check horizontally
-
-
+	
 	}
 
 	//look at a column, row, or diagonal. If there is a piece that is the player's color is blocked by an opponent's color and there is no empty piece in between, placeable is true
@@ -152,6 +167,6 @@ public class GameState {
 		}else {
 			return 0; // 0 in this case means a draw 
 		}
-	}
-
+	}           
 }
+
