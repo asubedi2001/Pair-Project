@@ -70,7 +70,7 @@ public class GameState {
 		//potentialCell is the cell that the user is trying to use
 		int row = potentialCell.getRow();
 		int col = potentialCell.getCol();
-
+		int playerTurn = playerTurn(turn);
 		/*if anything goes wrong, make sure to check over here for any intialization issues. 
 		It was saying for all of these variables that they might not have been intialized*/
 		boolean isPlaceableHorizontal = false;
