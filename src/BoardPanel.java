@@ -1,26 +1,21 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.event.MouseEvent;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 public class BoardPanel extends JPanel {
-    private ImageIcon blackCircIcon = new ImageIcon("img/black-circle-png47c-4a62-b41d-149d42a05759.png");
-    private ImageIcon whiteCircIcon = new ImageIcon("img/circle-png-circle-icon-1600.png");
-    private JLabel blackCirc = new JLabel(blackCircIcon);
-    private JLabel whiteCirc = new JLabel(whiteCircIcon);
+    GameState state;
+    int counter = 0;
+
+    BoardPanel(GameState gameState) {
+        state = gameState;
+    }
 
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-    	int w = this.getWidth();
+    	super.paintComponent(g);
+        int w = this.getWidth();
         int h = this.getHeight();
         Graphics2D G = (Graphics2D) g;
-        boolean[][] placeable = GameState.getPlaceableArray();
-        
+        counter++;
+
         //draw lines
         for (int i = 0; i < 9; i++) {
             // draw horz lines
@@ -48,25 +43,20 @@ public class BoardPanel extends JPanel {
         }
 
         //draw board pieces
-        for (Cell[] currentCellArray : GameState.getCellArray()) {
-            for (Cell currentCell : currentCellArray) {
-                if (currentCell.getState() == 1) {
-                    int[] coordinate = calcPixStart(currentCell);
-                    G.drawOval(coordinate[0], coordinate[1], w / 8, h / 8);
-                } else if (currentCell.getState() == 2) {
-                    int[] coordinate = calcPixStart(currentCell);
-                    G.fillOval(coordinate[0], coordinate[1], w / 8, h / 8);
+        for (int a = 0; a < 8; a++) {
+            for (int b = 0; b < 8; b++) {
+                if (state.getCurrentBoard()[a][b] == 1) {
+                    int[] coordinate = calcPixStart(new Cell(a, b, 1));
+                    G.setColor(Color.BLACK);
+                    G.drawOval(coordinate[0] +5, coordinate[1] + 8, (w / 8) -8, (h / 8) -8);
+                }
+                if (state.getCurrentBoard()[a][b] == 2) {
+                    int[] coordinate = calcPixStart(new Cell(a, b, 2));
+                    G.setColor(Color.BLACK);
+                    G.fillOval(coordinate[0] + 5, coordinate[1] + 8, (w / 8) -8, (h / 8) -8);
+                    G.drawOval(coordinate[0] + 5, coordinate[1] + 8, (w / 8) -8, (h / 8) -8);
                 }
             }
-        }
-        
-        for(int i=0; i<8; i++) {
-        	for(int a=0; a<8;a++) {
-        		if(placeable[i][a]) {
-        			int[] coordinate = calcPixStart(GameState.getCellArray()[i][a]);
-        			G.fillRect(coordinate[0], coordinate[1], w/8, h/8);
-        		}
-        	}
         }
     }
 
@@ -76,18 +66,12 @@ public class BoardPanel extends JPanel {
         int w = this.getWidth();
         int xCell = given.getCol();
         int yCell = given.getRow();
-        coordinate[0] = (w/8) * xCell;
-        coordinate[1] = (h/8) * yCell;
-      //  flipOverYEqualsNegX(coordinate);
+        coordinate[0] = (w / 8) * xCell + 1;
+        coordinate[1] = (h / 8) * yCell + 1;
         return coordinate;
 
     }
-    
-    /*private int[] flipOverYEqualsNegX(int[] flipThis) {
-    	
-    }*/
 
-    // Just returns the Cell. You can retrieve the Cell's location using getRow and getCol. Or you can return an int[] with 2 values.
     public Cell calcCellClicked(int xPix, int yPix) {
         int h = this.getHeight();
         int w = this.getWidth();
@@ -100,16 +84,11 @@ public class BoardPanel extends JPanel {
 
         Cell cell = new Cell();
 
-      //  System.out.println("XPix: " + xPix);
-      //  System.out.println("yPix: " + yPix);
         for (int a = 0; a < 8; a++) {
-
-
             if (!xFound) {
                 xFound = (xPix >= ((widthDifference) * a) && xPix <= ((widthDifference) * a + (widthDifference)));
                 cell.setCol(a);
             }
-           // System.out.println("X Interation: " + a + "  xFound: " + xFound);
 
         }
 
@@ -120,15 +99,11 @@ public class BoardPanel extends JPanel {
 
                 cell.setRow(b);
             }
-           // System.out.println("Y Interation: " + b + "  yFound: " + yFound);
 
         }
-        //System.out.println("Printed Row: " + cell.getRow() + " Printed Column: " + cell.getCol());
         return cell;
     }
 
-    public BoardPanel() {
 
-    }
 
 }
