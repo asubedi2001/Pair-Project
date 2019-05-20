@@ -1,322 +1,531 @@
+import java.util.ArrayList;
 
 public class GameState {
+    private boolean turn; //true -> player1Turn false->player2Turn
+    private int[][] currentBoard = new int[8][8];
+    private ArrayList<Cell> cellsToUpdate = new ArrayList<Cell>();
 
-	//double check if static is correct. I think it is. 
-	private static Cell[][] cellArray = new Cell[8][8]; // current state of cells on board
-	private static boolean turn; //true -> player1Turn false->player2Turn
-	private static boolean[][] placeableArray = new boolean[8][8];
-	private static int[][] currentBoard = new int[8][8];	
-	
-	
-	//Constructor
-	GameState() {
-		for(int a = 0;a < 8; a++) {
-			for(int b = 0; b < 8; b++) {
-				cellArray[a][b] = new Cell();
-				//sets the row and col 
-				cellArray[a][b].setRow(a);
-				cellArray[a][b].setCol(b);
-				
-				placeableArray[a][b] = false;
-				currentBoard[a][b] = 0;
-			}
-		}
-				
-		//Initialize the states of the beginning pieces (pieces in the middle)
-		for(int i = 3; i < 5; i++) {
-			for(int a = 3; a<5; a++) {
-				if(i == a) {
-					currentBoard[i][a] = Cell.WHITE;
-					cellArray[i][a].setWhite();
-				}else {
-					currentBoard[i][a] = Cell.BLACK;
-					cellArray[i][a].setBlack();
-				}
-			}
-		}
-	
-		turn = false;
-		
-	}
+    GameState() {
 
-	public static boolean[][] getPlaceableArray() {
-		return placeableArray;
-	}
-	
-	public void setTurn(boolean turnSet) {
-		turn = turnSet;
-	}
+        //init all to 0
+        for (int a = 0; a < 8; a++) {
+            for (int b = 0; b < 8; b++) {
+                currentBoard[a][b] = 0;
+            }
+        }
+        //Initialize the states of the beginning pieces (pieces in the middle)
+        for (int i = 3; i < 5; i++) {
+            for (int a = 3; a < 5; a++) {
+                if (i == a) {
+                    currentBoard[i][a] = 1;
+                } else {
+                    currentBoard[i][a] = 2;
+                }
+            }
+        }
 
-	public boolean getTurn() {
-		return turn;
-	}
+    }
 
-	public static Cell[][] getCellArray() {
-		return cellArray;
-		// return the reference for the array of cells
-	}
-	public void updateCellArray(int row, int col, int state){
-		if(state == 0) {
-			cellArray[row][col].setEmpty();
-		} else if(state == 1) {
-			cellArray[row][col].setWhite();
-		}else if(state == 2) {
-			cellArray[row][col].setBlack();
-		}
+    public void setTurn(boolean turnSet) {
+        turn = turnSet;
+    }
+
+    public boolean getTurn() {
+        return turn;
+    }
+
+    public int[][] getCurrentBoard() {
+        return currentBoard;
+    }
+
+    public void updateCellArray(int row, int col, int state) {
+
+        if (state == 0) {
+            currentBoard[row][col] = 0;
+        } else if (state == 1) {
+            currentBoard[row][col] = 1;
+        } else if (state == 2) {
+
+            currentBoard[row][col] = 2;
+        }
 
 
-	}
+    }
 
-	//call this at the end of isPlaceable
-	private void updatePlaceableArray() {
-		for(int i=0; i<8; i++) {
-			for(int a=0; a<8; a++) {
-				if(isPlaceable(cellArray[i][a])) {
-					placeableArray[i][a] = true;
-				}else {
-					placeableArray[i][a] = false;
-				}
-			}
-		}
-	}
-	
-	// Should create an array for this that has a true and false for each player. This should be only a couple lines long
-	public boolean isPlaceable(Cell potentialCell) {
-		//potentialCell is the cell that the user is trying to use
-		int row = potentialCell.getRow();
-		int col = potentialCell.getCol();
+    public int playerTurn(boolean turn) {
+        if (turn) {
+            return 1; //return white int
+        } else {
+            return 2;
+        }
+    }
 
-		/*if anything goes wrong, make sure to check over here for any intialization issues. 
-		It was saying for all of these variables that they might not have been intialized*/
-		boolean isPlaceableHorizontal = false;
-		boolean isPlaceableVertical = false;
-		boolean isPlaceableIncline = false;
-		boolean isPlaceableDecline = false;
-		boolean isPlaceableInclineOrDecline = false;
+    private boolean downDirection(int rw, int cl) {
+        int x = rw;
+        int y = cl;
 
+        int playerTurn = playerTurn(turn);
+        int opponentPlayer = playerTurn(!turn);
 
-		//creates a new array and sets contents in that array equal to cellArray's states
-		for(int rw = 0; rw < 8; rw ++) {
-			for(int cl = 0; cl< 8; cl++) {
-				currentBoard[rw][cl] = cellArray[rw][cl].getState(); 
-			}
-		}
+        if (currentBoard[x][y] != 0) { 
+            return false;
+        }
 
-		
-		// REMEBER TO ADD THIS LINE OF CODE, IF THE STATUS OF THE POTENTIAL PIECE IS NOT EXMPTY, RETURN FALSE
-		if(potentialCell.getState() == 0 ) {
-			if(!turn) {
-				//player 2 (Black)
+        //down
+        if (x + 1 > 7) {
+            return false;
+        }
+        if (currentBoard[x + 1][y] == opponentPlayer) { 
 
-				//checks vertically
-				if(row == 0) {
-					if(currentBoard[row+1][col] == 1) {
-						isPlaceableVertical = true;
-					}else {
-						isPlaceableVertical = false;
-					}
-				}else if (row == 7) {
-					if(currentBoard[row-1][col] == 1) {
-						isPlaceableVertical = true;
-					}else {
-						isPlaceableVertical = false;
-					}
-				}else {
-					//if in between, check both sides
-					if(currentBoard[row+1][col] == 1 || currentBoard[row-1][col] == 1) {
-						isPlaceableVertical = true;						
-					}else{
-						isPlaceableVertical = false;
-					}
-				}
+            int num = 0;
 
-				//check horizontally
-				if(col == 0) {
-					if(currentBoard[row][col+1] == 1) {
-						isPlaceableHorizontal = true;
-					}else {
-						isPlaceableHorizontal = false;
-					}
-				}else if (row == 7) {
-					if(currentBoard[row][col-1] == 1) {
-						isPlaceableHorizontal = true;
-					}else {
-						isPlaceableHorizontal = false;
-					}
-				}else {
-					//if in between, check both sides
-					if(currentBoard[row][col+1] == 1 || currentBoard[row][col-1] == 1) {
-						isPlaceableHorizontal = true;						
-					}else{
-						isPlaceableHorizontal = false;
-					}
-				}
+            for (int a = 2; x + a < 8; a++) {
+
+                if (a == 7) {
+                    return false;
+                }
 
 
-				//check Incline TODO make sure that the edge cases are taken care of inside of the if statements. 
-				// Row 0, Row 7, Col 0, Col 7, and the rest can be placed in an else statement 
-				if(row == 0 && col == 0) { 					//decline
-					if(currentBoard[row + 1][col + 1] == 1) {
-						isPlaceableDecline = true;
-					}else {
-						isPlaceableDecline = false;
-					}
-				}else if(row == 0 && col == 7) {
-					if(currentBoard[row +1][col-1] == 1) {
-						isPlaceableIncline = true;
-					}else {
-						isPlaceableIncline = false;
-					}
-				}else if(row == 7 && col == 7){				//decline
-					if(currentBoard[row - 1][col - 1] == 1) {
-						isPlaceableDecline = true;
-					}else {
-						isPlaceableDecline = false;
-					}
-				}else if(row == 7 && col == 0){
-					if(currentBoard[row - 1][col + 1] == 1) {
-						isPlaceableIncline = true;
-					}else {
-						isPlaceableIncline = false;
-					}
-				}else if(col == 0){							// incline but on first coloumn
-					if(currentBoard[row - 1][col + 1] == 1) {
-						isPlaceableIncline = true;
-					}else {
-						isPlaceableIncline = false;
-					}
-				}else if(col == 7){							// decline but on last coloumn
-					if(currentBoard[row - 1][col - 1] == 1) {
-						isPlaceableDecline = true;
-					}else {
-						isPlaceableDecline = false;
-					}
-				}else{
+                if (currentBoard[x + a][y] == playerTurn) {
 
-					//if in between, check both sides
-					//checks decline portion (below)		// checks incline portion (below)
-					if(currentBoard[row + 1][col+1] == 1 || currentBoard[row - 1][col + 1] == 1 
-							||currentBoard[row + 1][col - 1] == 1 || currentBoard[row+1][col - 1] == 1) {
-						isPlaceableInclineOrDecline = true;						
-					}else{
-						isPlaceableInclineOrDecline = false;
-					}
-				}
+                    num = (x + a);
+                    a = 8; 
+                }
 
-			}else {
-				//if player 1
+            }
+            int diff = num - x; 
+            
+            for (int b = 0; b < diff; b++) {
+                cellsToUpdate.add(new Cell(x + b, y, playerTurn));
+            }
+            if (num > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
 
-				//checks vertically
-				if(row == 0) {
-					if(currentBoard[row+1][col] == 2) {
-						isPlaceableVertical = true;
-					}else {
-						isPlaceableVertical = false;
-					}
-				}else if (row == 7) {
-					if(currentBoard[row-1][col] == 2) {
-						isPlaceableVertical = true;
-					}else {
-						isPlaceableVertical = false;
-					}
-				}else {
-					//if in between, check both sides
-					if(currentBoard[row+1][col] == 2 || currentBoard[row-1][col] == 2) {
-						isPlaceableVertical = true;						
-					}else{
-						isPlaceableVertical = false;
-					}
-				}
+            return false;
+        }
+    }
 
-				//check horizontally
-				if(col == 0) {
-					if(currentBoard[row][col+1] == 2) {
-						isPlaceableHorizontal = true;
-					}else {
-						isPlaceableHorizontal = false;
-					}
-				}else if (row == 7) {
-					if(currentBoard[row][col-1] == 2) {
-						isPlaceableHorizontal = true;
-					}else {
-						isPlaceableHorizontal = false;
-					}
-				}else {
-					//if in between, check both sides
-					if(currentBoard[row][col+1] == 2 || currentBoard[row][col-1] == 2) {
-						isPlaceableHorizontal = true;						
-					}else{
-						isPlaceableHorizontal = false;
-					}
-				}
+    private boolean upDirection(int rw, int cl) {
+        int x = rw;
+        int y = cl;
+
+        int playerTurn = playerTurn(turn);
+        int opponentPlayer = playerTurn(!turn);
+
+        if (currentBoard[x][y] != 0) { 
+            return false;
+        }
+
+        //checks up
+        if (x - 1 < 0) {
+            return false;
+        }
+        if (currentBoard[x - 1][y] == opponentPlayer) { 
+
+            int num = 0;
+
+            for (int a = 2; x - a > 0; a++) {
+
+                if (a == 7) {
+                    return false;
+                }
+                if (currentBoard[x - a][y] == playerTurn) {
+
+                    num = (y + a);
+                    a = 8; 
+                }
+
+            }
+            int diff = num - y; 
+            
+            for (int b = 0; b < diff; b++) {
+                cellsToUpdate.add(new Cell(x - b, y, playerTurn));
+            }
+            if (num > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+            return false;
+        }
+    }
+
+    private boolean leftDirection(int rw, int cl) {
+        int x = rw;
+        int y = cl;
+
+        int playerTurn = playerTurn(turn);
+        int opponentPlayer = playerTurn(!turn);
+
+        if (currentBoard[x][y] != 0) {
+            return false;
+        }
+
+        //left
+        if (y + 1 > 7) {
+            return false;
+        }
+        if (currentBoard[x][y + 1] == opponentPlayer) {
+
+            int num = 0;
+
+            for (int a = 2; y + a < 8; a++) {
+
+                if (a == 7) {
+                    return false;
+                }
+                if (currentBoard[x][y + a] == playerTurn) {
+
+                    num = (y + a);
+                    a = 8; 
+                }
+
+            }
+            int diff = num - y; 
+            
+            for (int b = 0; b < diff; b++) {
+                cellsToUpdate.add(new Cell(x, y + b, playerTurn));
+            }
+            if (num > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+            return false;
+        }
+    }
+
+    private boolean rightDirection(int rw, int cl) {
+
+        int x = rw;
+        int y = cl;
+
+        int playerTurn = playerTurn(turn);
+        int opponentPlayer = playerTurn(!turn);
+
+        if (currentBoard[x][y] != 0) { 
+            return false;
+        }
+        if (y - 1 < 0) {
+            return false;
+        }
+        //right
+        if (currentBoard[x][y - 1] == opponentPlayer) {
+            int num = 0;
+
+            for (int a = 2; y - a > 0; a++) {
+
+                if (a == 7) {
+                    return false;
+                }
+                if (currentBoard[x][y - a] == playerTurn) {
+                    num = (y + a);
+                    a = 8; 
+                }
+
+            }
+            int diff = num - y; 
+            for (int b = 0; b < diff; b++) {
+                cellsToUpdate.add(new Cell(x, y - b, playerTurn));
+            }
+            if (num > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+            return false;
+        }
 
 
-				//check Incline TODO make sure that the edge cases are taken care of inside of the if statements. 
-				// Row 0, Row 7, Col 0, Col 7, and the rest can be placed in an else statement 
-				if(row == 0 && col == 0) { 					//decline
-					if(currentBoard[row + 1][col + 1] == 2) {
-						isPlaceableDecline = true;
-					}else {
-						isPlaceableDecline = false;
-					}
-				}else if(row == 0 && col == 7) {
-					if(currentBoard[row +1][col-1] == 2) {
-						isPlaceableIncline = true;
-					}else {
-						isPlaceableIncline = false;
-					}
-				}else if(row == 7 && col == 7){				//decline
-					if(currentBoard[row - 1][col - 1] == 2) {
-						isPlaceableDecline = true;
-					}else {
-						isPlaceableDecline = false;
-					}
-				}else if(row == 7 && col == 0){
-					if(currentBoard[row - 1][col + 1] == 2) {
-						isPlaceableIncline = true;
-					}else {
-						isPlaceableIncline = false;
-					}
-				}else if(col == 0){							// incline but on first coloumn
-					if(currentBoard[row - 1][col + 1] == 2) {
-						isPlaceableIncline = true;
-					}else {
-						isPlaceableIncline = false;
-					}
-				}else if(col == 7){							// decline but on last coloumn
-					if(currentBoard[row - 1][col - 1] == 2) {
-						isPlaceableDecline = true;
-					}else {
-						isPlaceableDecline = false;
-					}
-				}else{
+    }
 
-					//if in between, check both sides
-					//checks decline portion (below)		// checks incline portion (below)
-					if(currentBoard[row + 1][col+1] == 2 || currentBoard[row - 1][col + 1] == 2 
-							||currentBoard[row + 1][col - 1] == 2 || currentBoard[row - 1][col - 1] == 2) {
-						isPlaceableInclineOrDecline = true;						
-					}else{
-						isPlaceableInclineOrDecline = false;
-					}
-				}
-			}
-		}
-		return (isPlaceableHorizontal || isPlaceableVertical || 
-				isPlaceableIncline || isPlaceableDecline || isPlaceableInclineOrDecline );
+    private boolean downLeftDirection(int rw, int cl) {
+        int x = rw;
+        int y = cl;
 
-	}
+        int playerTurn = playerTurn(turn);
+        int opponentPlayer = playerTurn(!turn);
 
-	//look at a column, row, or diagonal. If there is a piece that is the player's color is blocked by an opponent's color and there is no empty piece in between, placeable is true
-	
-	public int Winner(Player player1, Player player2) {
-		if(player1.returnPoints(1) > player2.returnPoints(2)) {
-			return 1; // Player 1 (White Wins)
-		}else if(player1.returnPoints(1) < player2.returnPoints(2)) {
-			return 2; // Player 2 (Black Wins)
-		}else {
-			return 0; // 0 in this case means a draw 
-		}
-	}
+        if (currentBoard[x][y] != 0) { 
+            return false;
+        }
+
+        //down
+        if (x + 1 > 7 || y + 1 > 7) {
+
+            return false;
+        }
+        if (currentBoard[x + 1][y + 1] == opponentPlayer) { 
+
+            int num = 0;
+
+            for (int a = 2; x + a < 8 && y + a < 8; a++) {
+
+                if (a == 7) {
+                    return false;
+                }
+
+
+                if (currentBoard[x + a][y + a] == playerTurn) {
+
+                    num = (x + a);
+                    a = 8; 
+                }
+
+            }
+            int diff = num - x; 
+            
+            for (int b = 0; b < diff; b++) {
+
+                //updateCellArray(x + b, y + b, playerTurn);// Sets everything in between equal
+                cellsToUpdate.add(new Cell(x + b, y + b, playerTurn));
+
+            }
+
+            if (num > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+            return false;
+        }
+    }
+
+    private boolean downRightDirection(int rw, int cl) {
+        int x = rw;
+        int y = cl;
+
+        int playerTurn = playerTurn(turn);
+        int opponentPlayer = playerTurn(!turn);
+
+        if (currentBoard[x][y] != 0) { 
+            return false;
+        }
+
+        //down
+        if (x + 1 > 7 || y - 1 < 0) {
+
+            return false;
+        }
+        if (currentBoard[x + 1][y - 1] == opponentPlayer) { 
+
+            int num = 0;
+
+            for (int a = 2; x + a < 8 && y - a > 0; a++) {
+
+                if (a == 7) {
+                    return false;
+                }
+
+
+                if (currentBoard[x + a][y - a] == playerTurn) {
+
+                    num = (x + a);
+                    a = 8; 
+                }
+
+            }
+            
+            int diff = num - x; 
+            
+            for (int b = 0; b < diff; b++) {
+
+                // updateCellArray(x + b, y - b, playerTurn);// Sets everything in between equal
+                cellsToUpdate.add(new Cell(x + b, y - b, playerTurn));
+            }
+
+            if (num > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+            return false;
+        }
+    }
+
+    private boolean upRightDirection(int rw, int cl) {
+        int x = rw;
+        int y = cl;
+
+        int playerTurn = playerTurn(turn);
+        int opponentPlayer = playerTurn(!turn);
+
+        if (currentBoard[x][y] != 0) { 
+            return false;
+        }
+
+        //down
+        if (x - 1 < 0 || y - 1 < 0) {
+
+            return false;
+        }
+        if (currentBoard[x - 1][y - 1] == opponentPlayer) { 
+
+            int num = 0;
+
+            for (int a = 2; x - a > 0 && y - a > 0; a++) {
+
+                if (a == 7) {
+                    return false;
+                }
+
+
+                if (currentBoard[x - a][y - a] == playerTurn) {
+
+                    num = (x + a);
+                    a = 8; 
+                }
+
+            }
+            
+            int diff = num - x; 
+            
+            for (int b = 0; b < diff; b++) {
+
+                // updateCellArray(x - b, y - b, playerTurn);// Sets everything in between equal
+                cellsToUpdate.add(new Cell(x - b, y - b, playerTurn));
+            }
+
+            if (num > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+            return false;
+        }
+    }
+
+    private boolean upLeftDirection(int rw, int cl) {
+        int x = rw;
+        int y = cl;
+
+        int playerTurn = playerTurn(turn);
+        int opponentPlayer = playerTurn(!turn);
+
+        if (currentBoard[x][y] != 0) { 
+            return false;
+        }
+        //down
+        if (x - 1 < 0 || y + 1 > 7) {
+            return false;
+        }
+        if (currentBoard[x - 1][y + 1] == opponentPlayer) { 
+            int num = 0;
+            for (int a = 2; x - a > 0 && y + a < 8; a++) {
+                if (a == 7) {
+                    return false;
+                }
+                if (currentBoard[x - a][y + a] == playerTurn) {
+                    num = (x + a);
+                    a = 8; 
+                }
+            }
+            int diff = num - x; 
+            for (int b = 0; b < diff; b++) {
+                cellsToUpdate.add(new Cell(x - b, y + b, playerTurn));
+            }
+            if (num > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isPlaceable(int rw, int cl) {
+        cellsToUpdate.clear();
+        downLeftDirection(rw, cl);
+        downRightDirection(rw, cl);
+        upRightDirection(rw, cl);
+		upLeftDirection(rw, cl);
+		downDirection(rw, cl);
+		upDirection(rw, cl);
+		leftDirection(rw, cl);
+		rightDirection(rw, cl);
+		if (cellsToUpdate.size() > 0) {
+            for (Cell cell : cellsToUpdate) {
+                updateCellArray(cell.getRow(), cell.getCol(), cell.getState());
+            }
+            return true;
+        } else {
+            return false;
+        }
+
+
+    }
+
+    //isPlaceable for GameOver is used in the GameOver method
+    private boolean isPlaceableForGameOver(int rw, int cl) {
+
+        if (downLeftDirection(rw, cl) || downRightDirection(rw, cl) ||
+        	upRightDirection(rw, cl)  || upLeftDirection(rw, cl)    ||
+        	downDirection(rw, cl)	  || upDirection(rw, cl)		||
+        	leftDirection(rw, cl)	  || rightDirection(rw, cl)		
+           ) {
+            return true;
+        }
+        return false;
+        
+    }
+
+    //should be used by a GUI class in order to determine whether
+    public boolean gameOver() {
+        
+    	for (int a = 0; a < 8; a++) {
+            for (int b = 0; b < 8; b++) {
+            	if(isPlaceableForGameOver(a,b)) {
+            		return false;
+            	}
+            }
+        }
+    	
+        return true;
+    }
+
+
+    public int PlayerTwoPoints() {
+        int points = 0;
+        for (int a = 0; a < 8; a++) {
+            for (int b = 0; b < 8; b++) {
+                if (currentBoard[a][b] == 2) {
+                    points++;
+                }
+            }
+        }
+        return points;
+    }
+
+    public int PlayerOnePoints() {
+        int points = 0;
+        for (int a = 0; a < 8; a++) {
+            for (int b = 0; b < 8; b++) {
+                if (currentBoard[a][b] == 1) {
+                    points++;
+                }
+            }
+        }
+        return points;
+    }
+
+    //look at a column, row, or diagonal. If there is a piece that is the player's color is blocked by an opponent's color and there is no empty piece in between, placeable is true
+
 
 }
